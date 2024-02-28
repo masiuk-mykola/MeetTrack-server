@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           inventory: |
             [all]
-            ${{ secrets.AWS }} address=localhost
+            ${{ secrets.AWS }}
 
           options: |
             -e NODE_ENV=production

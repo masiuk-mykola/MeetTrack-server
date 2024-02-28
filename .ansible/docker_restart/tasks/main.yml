@@ -1,5 +1,5 @@
 - name: Build docker image
-  docker_image:
+  community.docker.docker_image_build:
     name: meettrack_image
     force_source: true
     source: build

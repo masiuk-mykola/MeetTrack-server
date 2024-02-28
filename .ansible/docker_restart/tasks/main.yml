@@ -1,6 +1,6 @@
 - name: Build docker image
   community.docker.docker_image_build:
-    name: meettrack_image
+    name: meetTrack_image
     force_source: true
     source: build
     build:
@@ -10,7 +10,7 @@
 - name: Run docker container
   community.docker.docker_container:
     name: meettrack
-    image: meettrack_image
+    image: meetTrack_image
     recreate: true
     restart: true
     ports:

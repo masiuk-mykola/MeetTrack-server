@@ -3,9 +3,8 @@
     name: meetTrack_image
     force_source: true
     source: build
-    build:
-      path: /var/lib/docker/
-      dockerfile: .docker/Dockerfile
+    path: "{{ APP_PATH }}"
+    dockerfile: .docker/Dockerfile
 
 - name: Run docker container
   community.docker.docker_container:

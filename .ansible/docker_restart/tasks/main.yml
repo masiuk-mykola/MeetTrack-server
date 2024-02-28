@@ -6,3 +6,14 @@
     build:
       path: "{{ APP_PATH }}"
       dockerfile: .docker/Dockerfile
+
+- name: Run docker container
+  docker_container:
+    name: MeetTrack
+    image: MeetTrack_image
+    recreate: true
+    restart: true
+    ports:
+      - "{{ PORT }}:{{ PORT }}"
+    env:
+      NODE_ENV: "{{ NODE_ENV }}"

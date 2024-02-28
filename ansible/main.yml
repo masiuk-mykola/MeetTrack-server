@@ -1,0 +1,7 @@
+- name: Build MeetTrack server
+  hosts: all
+  remote_user: ubuntu
+  dir: "{{ APP_PATH }}"
+  roles:
+    - git_pull
+    - docker_restart

@@ -1,0 +1,27 @@
+name: Deploy MeetTrack server to AWS EC@ Ubuntu server
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout 🛎️
+
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: .ansible/main.yml
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          inventory: |
+            [all]
+            ${{ secrets.AWS }} address=localhost
+
+          options: |
+            -e NODE_ENV=production
+            -e PORT=6001
+            -e GITHUB_REPO=${{ github.repository }}
+            -e APP_PATH=/home/ubuntu/apps/app

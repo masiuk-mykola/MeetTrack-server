@@ -1,10 +1,12 @@
 - name: Build docker image
-  community.docker.docker_image_build:
+  docker_image:
     name: meetTrack_image
     force_source: true
-    source: build
     build:
-      path: "{{ APP_PATH }}/.docker/Dockerfile"
+      path: "{{ APP_PATH }}"
+      dockerfile: .docker/Dockerfile
+    source: build
+    state: present
 
 - name: Run docker container
   community.docker.docker_container:

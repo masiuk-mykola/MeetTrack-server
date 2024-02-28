@@ -4,8 +4,8 @@
     force_source: true
     source: build
     build:
-      path: "{{ APP_PATH }}"
-      dockerfile: .docker/Dockerfile
+      path: "{{ APP_PATH }}/.docker" # Path to the directory containing Dockerfile
+      dockerfile: Dockerfile
 
 - name: Run docker container
   community.docker.docker_container:

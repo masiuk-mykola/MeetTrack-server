@@ -1,5 +1,5 @@
 - name: Build docker image
-  docker_image:
+  community.docker.docker_image_build:
     name: meetTrack_image
     force_source: true
     source: build
@@ -8,7 +8,7 @@
       dockerfile: .docker/Dockerfile
 
 - name: Run docker container
-  docker_container:
+  community.docker.docker_container:
     name: meetTrack
     image: meetTrack_image
     recreate: true

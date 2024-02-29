@@ -1,6 +1,5 @@
 FROM node:latest
 
-RUN mkdir -p /meetTrack/app
 WORKDIR /meetTrack
 
 COPY apps/app/package.json .

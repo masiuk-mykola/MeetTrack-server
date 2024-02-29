@@ -25,3 +25,4 @@ jobs:
             -e PORT=6001
             -e GITHUB_REPO=${{ github.repository }}
             -e APP_PATH=/home/ubuntu/apps/app
+            --verbose

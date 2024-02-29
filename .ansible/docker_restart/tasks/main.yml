@@ -1,7 +1,7 @@
 - name: Build docker image
   community.docker.docker_image:
     build:
-      path: "{{ APP_PATH }}/.docker/Dockerfile"
+      path: "{{ APP_PATH }}/.docker/"
     name: meettrack_image
     source: build
     force_source: true

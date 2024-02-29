@@ -4,8 +4,8 @@
     force_source: true
     source: build
     build:
-      path: "{{ APP_PATH }}/.docker" # Path to the directory containing Dockerfile
-      dockerfile: Dockerfile
+      path: /home/ubuntu/apps/app"
+      dockerfile: .docker/Dockerfile
 
 - name: Run docker container
   community.docker.docker_container:

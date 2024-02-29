@@ -1,3 +1,6 @@
+- name: LS
+  command: pwd
+
 - name: Build docker image
   community.docker.docker_image:
     build:
@@ -5,8 +8,6 @@
     name: meettrack_image
     source: build
     force_source: true
-    args:
-      chdir: "/home/ubuntu/apps/app"
 
 - name: Run docker container
   community.docker.docker_container:

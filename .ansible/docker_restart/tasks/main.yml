@@ -2,6 +2,7 @@
   community.docker.docker_image:
     name: meetTrack_image
     force_source: true
+    source: build
     build:
       path: /home/ubuntu/apps/app/.docker
 

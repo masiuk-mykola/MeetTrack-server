@@ -7,7 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
         name: Checkout 🛎️
@@ -16,16 +15,10 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: .ansible/main.yml
-          configuration: |
-            [defaults]
-            bin_ansible_callbacks=True
-            stdout_callback = yaml
-            host_key_checking = false
-            interpreter_python = auto
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           inventory: |
             [all]
-            ${{ secrets.AWS_EC2 }}
+            ${{ secrets.AWS }} address=localhost
 
           options: |
             -e NODE_ENV=production

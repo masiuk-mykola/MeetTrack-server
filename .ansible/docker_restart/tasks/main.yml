@@ -1,10 +1,10 @@
 - name: Build docker image
   community.docker.docker_image:
-    name: meettrack_image
-    force_source: true
-    source: build
     build:
-      path: /home/ubuntu/apps/app/.docker
+      path: /home/ubuntu/apps/app/.docker/Dockerfile
+    name: meettrack_image
+    source: build
+    force_source: true
 
 - name: Run docker container
   community.docker.docker_container:

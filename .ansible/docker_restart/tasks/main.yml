@@ -5,6 +5,8 @@
     name: meettrack_image
     source: build
     force_source: true
+    args:
+      chdir: "/home/ubuntu/apps/app"
 
 - name: Run docker container
   community.docker.docker_container:
@@ -12,6 +14,7 @@
     image: meettrack_image
     recreate: true
     restart: true
+    env_file: /home/ubuntu/app.env
     ports:
       - "{{ PORT }}:{{ PORT }}"
     env:

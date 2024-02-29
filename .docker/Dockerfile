@@ -1,9 +1,10 @@
 FROM node:latest
 
+RUN mkdir -p /meetTrack/app
 WORKDIR /meetTrack
 
-COPY apps/app/package.json .
-COPY apps/app/app ./app
+COPY package.json /meetTrack
+COPY app /meetTrack/app
 
 RUN npm install --omit=dev
 

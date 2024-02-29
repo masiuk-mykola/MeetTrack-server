@@ -3,8 +3,8 @@ FROM node:latest
 RUN mkdir -p /meetTrack/app
 WORKDIR /meetTrack
 
-COPY apps/app/package.json /meetTrack
-COPY apps/app/app /meetTrack/app
+COPY /home/ubuntu/apps/app/package.json /meetTrack
+COPY /home/ubuntu/apps/app/app /meetTrack/app
 
 RUN npm install --omit=dev
 

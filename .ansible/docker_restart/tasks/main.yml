@@ -4,7 +4,8 @@
     force_source: true
     source: build
     build:
-      path: /home/ubuntu/apps/app"
+      pull: no
+      path: /home/ubuntu/apps/app/.docker"
       dockerfile: .docker/Dockerfile
 
 - name: Run docker container

@@ -1,0 +1,8 @@
+---
+
+all:
+  hosts:
+    production:
+      ansible_host: "{{ host }}"
+      ansible_user: ubuntu
+      ansible_port: 22

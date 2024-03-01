@@ -1,34 +1,35 @@
-name: Deploy MeetTrack server to AWS EC@ Ubuntu server
+name: Build and deploy MeetTrack server
 
 on:
   push:
-    branches: [main]
+    branches: [ci]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    container:
+      image: steelkiwi/ansible:5.10.0
     steps:
       - uses: actions/checkout@v4
         name: Checkout 🛎️
 
-      - name: Run playbook
-        uses: dawidd6/action-ansible-playbook@v2
-        with:
-          playbook: .ansible/main.yml
-          configuration: |
-            [defaults]
-            bin_ansible_callbacks=True
-            stdout_callback = yaml
-            host_key_checking = false
-            interpreter_python = auto
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          inventory: |
-            [all]
-            ${{ secrets.AWS }} address=localhost
-
-          options: |
-            -e NODE_ENV=production
-            -e PORT=6001
-            -e GITHUB_REPO=${{ github.repository }}
-            -e APP_PATH=/home/ubuntu/apps/app
-            --verbose
+      - name: Run ansible
+        env:
+          repo: ${{ github.repository }}
+          domain_name: ${{ secrets[format('DOMAIN_NAME_{0}', env.REPO_BRANCH)] }}
+          server: ${{ secrets[format('DOMAIN_NAME_{0}', env.REPO_BRANCH)] }}
+          ssh_key: ${{ secrets[format('SSH_KEY_{0}', env.REPO_BRANCH)] }}
+          jump_host: ${{ secrets[format('JUMP_HOST_{0}', env.REPO_BRANCH)] }}
+          migration_host: ${{ secrets[format('MIGRATION_HOST_{0}', env.REPO_BRANCH)] }}
+        run: |
+          eval $(ssh-agent -s)
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add - 
+          git config --global user.name "$GITHUB_ACTOR"
+          export ANSIBLE_CONFIG=$(eval echo `readlink -f ansible/ansible.cfg`)
+          cd ansible && ansible-playbook deploy.yml --extra-vars="image=meettrack |
+                                                                           tag=latest
+                                                                           branch=ci
+                                                                           repo=${{ env.repo }}
+                                                                           playbook=$GITHUB_REF_NAME.yml
+                                                                           project_name=meettrack
+                                                                           

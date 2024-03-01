@@ -1,0 +1,28 @@
+---
+
+- hosts: production
+  gather_facts: no
+  vars:
+    project:
+      name:           "{{ project_name }}"
+      user:           ubuntu
+      base_dir:       "/home/ubuntu"
+
+  tasks:
+
+  - name: Pull changes
+    git:
+      repo: "git@github.com:{{ repo }}.git"
+      dest: "{{ base_dir }}/repo"
+      single_branch: yes
+      version: "{{ branch }}"
+
+  - name: Build docker image
+    community.docker.docker_image:
+      build:
+        path: "{{ base_dir }}/repo/.docker/"
+      source: build
+      name: meettrack
+      state: present
+      force_source: true
+

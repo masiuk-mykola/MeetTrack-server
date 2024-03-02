@@ -13,14 +13,14 @@
   - name: Pull changes
     git:
       repo: "git@github.com:{{ repo }}.git"
-      dest: "{{ base_dir }}/repo"
+      dest: "{{ project.base_dir }}/repo"
       single_branch: yes
       version: "{{ branch }}"
 
   - name: Build docker image
     community.docker.docker_image:
       build:
-        path: "{{ base_dir }}/repo/.docker/"
+        path: "{{ project.base_dir }}/repo/.docker/"
       source: build
       name: "{{ image }}"
       state: present

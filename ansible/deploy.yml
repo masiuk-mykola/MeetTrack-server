@@ -44,6 +44,4 @@
   - name: Clear old images
     docker_prune:
       images: yes
-      images_filters:
-        dangling: false
 

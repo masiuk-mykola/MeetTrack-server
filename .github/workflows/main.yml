@@ -2,7 +2,7 @@ name: Build and deploy MeetTrack server
 
 on:
   push:
-    branches: [ci]
+    branches: [main]
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
           export ANSIBLE_CONFIG=$(eval echo `readlink -f ansible/ansible.cfg`)
           cd ansible && ansible-playbook deploy.yml --extra-vars="image=meettrack |
                                                                            host=${{ env.server }}
-                                                                           branch=ci
+                                                                           branch=main
                                                                            repo=${{ env.repo }}
                                                                            playbook=production.yml
                                                                            project_name=meettrack"

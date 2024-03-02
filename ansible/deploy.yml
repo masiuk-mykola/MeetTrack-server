@@ -29,6 +29,7 @@
     copy:
       src: "{{ project.base_dir }}/repo/ansible/{{ playbook }}"
       dest: "{{ project.base_dir }}/{{ project.name }}"
+      remote_src: true
 
   - name: Build image
     shell: "{{ docker_bin.stdout }} build -t {{ image }} -f .docker/Dockerfile ."

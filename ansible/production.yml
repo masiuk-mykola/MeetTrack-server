@@ -1,0 +1,12 @@
+services:
+  app:
+    image: "meettrack"
+    network_mode: "host"
+    command: |
+      /usr/bin/env sh -c "npm run start"
+    env_file:
+      - env/app.env
+    logging:
+      driver: syslog
+      options:
+        tag: docker/app

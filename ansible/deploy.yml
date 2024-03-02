@@ -1,0 +1,47 @@
+---
+
+- hosts: production
+  gather_facts: no
+  vars:
+    project:
+      name:           "{{ project_name }}"
+      user:           ubuntu
+      base_dir:       "/home/ubuntu"
+
+  tasks:
+
+  - name: Pull changes
+    git:
+      repo: "git@github.com:{{ repo }}.git"
+      dest: "{{ project.base_dir }}/repo"
+      single_branch: yes
+      version: "{{ branch }}"
+
+  - name: Register docker bin
+    shell: which docker
+    register: docker_bin
+
+  - name: Add 'compose' to the registered variable
+    set_fact:
+      compose_bin: "{{ docker_bin.stdout }} compose"
+
+  - name: Copy compose file
+    copy:
+      src: "{{ project.base_dir }}/repo/ansible/{{ playbook }}"
+      dest: "{{ project.base_dir }}/{{ project.name }}"
+      remote_src: true
+
+  - name: Build image
+    shell: "{{ docker_bin.stdout }} build -t {{ image }} -f .docker/Dockerfile ."
+    args:
+      chdir: "{{ project.base_dir }}/repo"
+
+  - name: Build docker compose
+    shell: "{{ compose_bin }} -f {{ playbook }} --project-name {{ project.name }} up -d --build"
+    args:
+      chdir: "{{ project.base_dir }}/{{ project.name }}"
+
+  - name: Clear old images
+    docker_prune:
+      images: yes
+

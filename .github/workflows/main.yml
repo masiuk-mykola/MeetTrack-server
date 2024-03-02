@@ -1,4 +1,4 @@
-name: Deploy MeetTrack server to AWS EC@ Ubuntu server
+name: Build and deploy MeetTrack server
 
 on:
   push:
@@ -6,29 +6,25 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    container:
+      image: steelkiwi/ansible:5.10.0
     steps:
       - uses: actions/checkout@v4
         name: Checkout 🛎️
 
-      - name: Run playbook
-        uses: dawidd6/action-ansible-playbook@v2
-        with:
-          playbook: .ansible/main.yml
-          configuration: |
-            [defaults]
-            bin_ansible_callbacks=True
-            stdout_callback = yaml
-            host_key_checking = false
-            interpreter_python = auto
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          inventory: |
-            [all]
-            ${{ secrets.AWS }} address=localhost
-
-          options: |
-            -e NODE_ENV=production
-            -e PORT=6001
-            -e GITHUB_REPO=${{ github.repository }}
-            -e APP_PATH=/home/ubuntu/apps/app
-            --verbose
+      - name: Run ansible
+        env:
+          repo: ${{ github.repository }}
+          server: ${{ secrets.AWS }}
+        run: |
+          eval $(ssh-agent -s)
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add - 
+          export ANSIBLE_CONFIG=$(eval echo `readlink -f ansible/ansible.cfg`)
+          cd ansible && ansible-playbook deploy.yml --extra-vars="image=meettrack |
+                                                                           host=${{ env.server }}
+                                                                           branch=main
+                                                                           repo=${{ env.repo }}
+                                                                           playbook=production.yml
+                                                                           project_name=meettrack"
+                                                                           

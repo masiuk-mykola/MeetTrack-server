@@ -1,6 +1,0 @@
-- name: Build MeetTrack server
-  hosts: all
-  remote_user: ubuntu
-  roles:
-    - git_pull
-    - docker_restart

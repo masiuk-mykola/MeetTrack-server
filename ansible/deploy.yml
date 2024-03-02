@@ -22,7 +22,7 @@
       build:
         path: "{{ base_dir }}/repo/.docker/"
       source: build
-      name: meettrack
+      name: "{{ image }}"
       state: present
       force_source: true
 

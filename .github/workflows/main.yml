@@ -16,20 +16,15 @@ jobs:
       - name: Run ansible
         env:
           repo: ${{ github.repository }}
-          domain_name: ${{ secrets[format('DOMAIN_NAME_{0}', env.REPO_BRANCH)] }}
-          server: ${{ secrets[format('DOMAIN_NAME_{0}', env.REPO_BRANCH)] }}
-          ssh_key: ${{ secrets[format('SSH_KEY_{0}', env.REPO_BRANCH)] }}
-          jump_host: ${{ secrets[format('JUMP_HOST_{0}', env.REPO_BRANCH)] }}
-          migration_host: ${{ secrets[format('MIGRATION_HOST_{0}', env.REPO_BRANCH)] }}
+          server: ${{ secrets.AWS }}
         run: |
           eval $(ssh-agent -s)
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add - 
-          git config --global user.name "$GITHUB_ACTOR"
           export ANSIBLE_CONFIG=$(eval echo `readlink -f ansible/ansible.cfg`)
           cd ansible && ansible-playbook deploy.yml --extra-vars="image=meettrack |
-                                                                           tag=latest
+                                                                           host=${{ env.server }}
                                                                            branch=ci
                                                                            repo=${{ env.repo }}
-                                                                           playbook=$GITHUB_REF_NAME.yml
+                                                                           playbook=production.yml
                                                                            project_name=meettrack
                                                                            

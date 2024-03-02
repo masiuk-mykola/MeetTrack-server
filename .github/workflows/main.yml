@@ -26,5 +26,5 @@ jobs:
                                                                            branch=ci
                                                                            repo=${{ env.repo }}
                                                                            playbook=production.yml
-                                                                           project_name=meettrack
+                                                                           project_name=meettrack"
                                                                            
